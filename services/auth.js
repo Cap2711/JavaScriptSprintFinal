@@ -1,30 +1,34 @@
 const jwt = require('jsonwebtoken');
 
-const authenticateJWT = (req, res, next) => {
+// Middleware to set JWT token from session
+function setToken(req, res, next) {
+    const token = req.session.token;
+    if (token) {
+        req.headers['authorization'] = `Bearer ${token}`;
+    }
+    next();
+}
+
+// Middleware to authenticate JWT token
+function authenticateJWT(req, res, next) {
     const authHeader = req.headers.authorization;
 
     if (authHeader) {
         const token = authHeader.split(' ')[1];
+
         jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
             if (err) {
-                return res.sendStatus(403);
+                return res.sendStatus(403); // Forbidden
             }
             req.user = user;
             next();
         });
     } else {
-        res.sendStatus(401);
+        res.sendStatus(401); // Unauthorized
     }
-};
+}
 
-const setToken = (req, res, next) => {
-    if (req.session && req.session.token) {
-        req.headers['authorization'] = `Bearer ${req.session.token}`;
-    }
-    next();
-};
-
-module.exports = { 
+module.exports = {
+    setToken,
     authenticateJWT,
-    setToken
 };

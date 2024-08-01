@@ -1,31 +1,24 @@
-const dal = require("./p.db");
+const dal = require('./p.db');
 
-var getFullText = function(text) {
-  if(DEBUG) console.log("postgres.dal.getFullText()");
-  return new Promise(function(resolve, reject) {
+async function getFullText(keyword) {
+    const sql = `SELECT cat_breed, cat_name, stay, owner, gender FROM cats \
+        WHERE cat_breed iLIKE '%'||$1||'%' \
+              OR cat_name iLIKE '%'||$1||'%' \
+              OR owner iLIKE '%'||$1||'%' \
+              OR gender iLIKE '%'||$1||'%' \
+              OR stay::text iLIKE '%'||$1||'%'`;
 
-    const sql = `SELECT breed, color, age, name FROM cats \
-    WHERE breed iLIKE '%'||$1||'%' \
-          OR color iLIKE '%'||$1||'%' \
-          OR age::text iLIKE '%'||$1||'%' \
-          OR name iLIKE '%'||$1||'%'`;
-
-
-
-
-    if(DEBUG) console.log(sql);
-    dal.query(sql, [text], (err, result) => {
-      if (err) {
-        if(DEBUG) console.log(err);
-        reject(err);
-      } else {
-        if(DEBUG) console.log(`Row count: ${result.rowCount}`);
-        resolve(result.rows);
-      }
-    }); 
-  }); 
-};
+    try {
+        console.log('Executing SQL:', sql, 'with keyword:', keyword); // Log the SQL query and keyword
+        const results = await dal.query(sql, [keyword]);
+        console.log('SQL Results:', results.rows); // Log the results
+        return results.rows;
+    } catch (error) {
+        console.error('Error executing SQL query:', error);
+        throw error;
+    }
+}
 
 module.exports = {
     getFullText,
-}
+};
