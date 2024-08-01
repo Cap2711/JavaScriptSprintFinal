@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
     <%- include('./partials/header.ejs') %>
     <body>
@@ -6,20 +7,27 @@
             <form action="/search" method="POST">
                 </br> 
                 <% if (theResults.length > 0) { %>
-                    <% theResults.forEach(item => { %>
-                        <b><%= item.make %> <%= item.model %></b> - 
-                        <%= item.description %> </br>
-                    <% }) %>
+                    <ul>
+                        <% theResults.forEach(item => { %>
+                            <li>
+                                <b>Cat Name:</b> <%= item.cat_name %> <br>
+                                <b>Breed:</b> <%= item.cat_breed %> <br>
+                                <b>Owner:</b> <%= item.owner %> <br>
+                                <b>Gender:</b> <%= item.gender %> <br>
+                                <b>Stay Duration:</b> <%= item.stay %> days
+                            </li>
+                        <% }) %>
+                    </ul>
                 <% } else { %>
                     <p>No search results.</p>
                 <% } %>
-            </br><label>Auto Search:</label></br>
-            <label>Keyword:
-                <input type="text" id="keyword" name="keyword" value="<%= locals.keyword %>" required>
-            </label>
-            </br>
-            <button>POST</button>
-        </form>
+                </br><label>Cat Search:</label></br>
+                <label>Keyword:
+                    <input type="text" id="keyword" name="keyword" value="<%= locals.keyword %>" required>
+                </label>
+                </br>
+                <button>Search</button>
+            </form>
         </div>
         <%- include('./partials/status.ejs') %>
         </br>
