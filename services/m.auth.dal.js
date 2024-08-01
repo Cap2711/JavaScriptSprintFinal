@@ -67,30 +67,7 @@ async function addLogin(name, email, password, uuidv4) {
   }
 }
 
-async function patchLogin(id, username, password, email) {
-  try {
-    await dal.connect();
-    const result = await dal.db("Auth").collection("Logins").updateOne(
-      { _id: new ObjectId(id) },
-      { $set: { username: username, password: password, email: email, last_updated: new Date() } }
-    );
-    await dal.close();
-    return result.modifiedCount;
-  } catch (error) {
-    console.log(error);
-  }
-}
 
-async function deleteLogin(id) {
-  try {
-    await dal.connect();
-    const result = await dal.db("Auth").collection("Logins").deleteOne({ _id: new ObjectId(id) });
-    await dal.close();
-    return result.deletedCount;
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 module.exports = {
   getLogins,
@@ -98,6 +75,5 @@ module.exports = {
   getLoginByEmail,
   getLoginById,
   addLogin,
-  patchLogin,
-  deleteLogin,
+  
 }

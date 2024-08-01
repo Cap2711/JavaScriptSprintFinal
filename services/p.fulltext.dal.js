@@ -1,15 +1,21 @@
-const dal = require("./dvdrental_db");
+const dal = require("./p.db");
 
 var getFullText = function(text) {
   if(DEBUG) console.log("postgres.dal.getFullText()");
   return new Promise(function(resolve, reject) {
-     const sql = `SELECT title, description FROM film \
-        WHERE description iLIKE '%'||$1||'%' \
-        OR title iLIKE '%'||$1||'%'`;
+
+    const sql = `SELECT breed, color, age, name FROM cats \
+    WHERE breed iLIKE '%'||$1||'%' \
+          OR color iLIKE '%'||$1||'%' \
+          OR age::text iLIKE '%'||$1||'%' \
+          OR name iLIKE '%'||$1||'%'`;
+
+
+
+
     if(DEBUG) console.log(sql);
     dal.query(sql, [text], (err, result) => {
       if (err) {
-        // logging should go here
         if(DEBUG) console.log(err);
         reject(err);
       } else {

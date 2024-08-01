@@ -53,27 +53,7 @@ async function addLogin(name, email, password, uuidv4) {
   }
 }
 
-async function patchLogin(id, username, password, email) {
-  let SQL = `UPDATE public."Logins"
-    SET username = $1, password = $2, email = $3, last_updated = now()
-    WHERE id = $4 RETURNING id;`
-  try {
-    let results = await dal.query(SQL, [username, password, email, id]);
-    return results.rows[0].id;
-  } catch (error) {
-    console.log(error);
-  }
-}
 
-async function deleteLogin(id) {
-  let SQL = `DELETE FROM public."Logins" WHERE id = $1 RETURNING id;`
-  try {
-    let results = await dal.query(SQL, [id]);
-    return results.rows[0].id;
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 module.exports = {
   getLogins,
@@ -81,6 +61,4 @@ module.exports = {
   getLoginByEmail,
   getLoginById,
   addLogin,
-  patchLogin,
-  deleteLogin,
 }
