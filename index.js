@@ -16,20 +16,30 @@ app.use(session({
     saveUninitialized: false
 }));
 
+
+
 const myEventEmitter = require('./services/logEvents.js');
+
+
 
 app.listen(PORT, (err) => {
     if (err) console.log(err);
-    myEventEmitter.emit('event', 'app.listen', 'Information', 'http search site successfully started.');
+    myEventEmitter.emit('event', 'app.listen', 'INFO', 'http search site successfully started.');
     console.log(`Simple app running on port ${PORT}.`)
 });
 
 app.get('/', async (req, res) => {
+    myEventEmitter.emit('event', 'app.get /about', 'INFO', 'landing page (index.ejs) was displayed.');
     res.render('index', {status: req.session.status});
 });
 
 app.get('/about', async (req, res) => {
+    myEventEmitter.emit('event', 'app.get /search', 'INFO', 'search page was displayed (search.ejs)');
     res.render('about', {status: req.session.status});
+});
+
+app.get('/search', async (req, res) => {
+    res.render('search', {status: req.session.status});
 });
 
 const authRouter = require('./routes/auth')

@@ -4,8 +4,8 @@ const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-//const { addLogin, getLoginByUsername } = require('../services/p.auth.dal')
-const { addLogin, getLoginByUsername } = require('../services/m.auth.dal')
+const { addLogin, getLoginByUsername } = require('../services/p.auth.dal')
+//const { addLogin, getLoginByUsername } = require('../services/m.auth.dal')
 
 router.use(express.static('public'));
 
